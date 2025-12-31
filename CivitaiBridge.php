@@ -161,17 +161,25 @@ class CivitaiBridge extends BridgeAbstract
                 'type' => 'checkbox',
                 'title' => 'If checked, models with different licenses will be included',
             ],
-            'allowCommercialUse' => [
-                'name' => 'Allow Commercial Use Models',
-                'type' => 'list',
-                'values' => [
-                    '' => '',
-                    'None' => 'None',
-                    'Image' => 'Image',
-                    'Rent' => 'Rent',
-                    'Sell' => 'Sell',
-                ],
-                'title' => 'If left empty, all models will be included. If set, models that allow the specified commercial use will be included',
+            'allowCommercialUse_None' => [
+                'name' => 'Allow Commercial Use: None',
+                'type' => 'checkbox',
+                'title' => 'If checked, models that do not allow commercial use will be included',
+            ],
+            'allowCommercialUse_Image' => [
+                'name' => 'Allow Commercial Use: Image',
+                'type' => 'checkbox',
+                'title' => 'If checked, models that allow commercial use for images will be included',
+            ],
+            'allowCommercialUse_Rent' => [
+                'name' => 'Allow Commercial Use: Rent',
+                'type' => 'checkbox',
+                'title' => 'If checked, models that allow commercial use for rent will be included',
+            ],
+            'allowCommercialUse_Sell' => [
+                'name' => 'Allow Commercial Use: Sell',
+                'type' => 'checkbox',
+                'title' => 'If checked, models that allow commercial use for sell will be included',
             ],
             'supportsGeneration' => [
                 'name' => 'Supports Generation',
@@ -276,7 +284,7 @@ class CivitaiBridge extends BridgeAbstract
             'types_detection' => 'Detection',
             'types_other' => 'Other',
         ];
-        $stringParams = ['query', 'tag', 'username', 'sort', 'period', 'allowCommercialUse', 'token'];
+        $stringParams = ['query', 'tag', 'username', 'sort', 'period', 'token'];
         $boolParams = [
             'allowNoCredit',
             'allowDerivatiives',
@@ -284,6 +292,12 @@ class CivitaiBridge extends BridgeAbstract
             'supportsGeneration',
             'favorites',
             'hidden',
+        ];
+        $commercialUseMap = [
+            'allowCommercialUse_None' => 'None',
+            'allowCommercialUse_Image' => 'Image',
+            'allowCommercialUse_Rent' => 'Rent',
+            'allowCommercialUse_Sell' => 'Sell',
         ];
 
         foreach ($stringParams as $paramName) {
@@ -315,6 +329,18 @@ class CivitaiBridge extends BridgeAbstract
 
         if (!empty($types)) {
             $params['types'] = $types;
+        }
+
+        $allowCommercialUse = [];
+        foreach ($commercialUseMap as $inputKey => $commercialUseValue) {
+            $value = $this->getInput($inputKey);
+            if ($value !== null && $value !== false) {
+                $allowCommercialUse[] = $commercialUseValue;
+            }
+        }
+
+        if (!empty($allowCommercialUse)) {
+            $params['allowCommercialUse'] = $allowCommercialUse;
         }
 
         $nsfw = $this->getInput('nsfw');

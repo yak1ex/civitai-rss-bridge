@@ -206,6 +206,8 @@ class CivitaiBridge extends BridgeAbstract
 
     public function collectData()
     {
+        $icon_size = 48;
+
         $baseUrl = 'https://civitai.com/api/v1/models';
         $url = $this->buildUrl($baseUrl);
         $header = array('Content-Type: application/json');
@@ -245,16 +247,23 @@ class CivitaiBridge extends BridgeAbstract
                 }
             }
             $prependImages .= '</div></div>';
-            $stats = '<p>📥 ' . ($item['stats']['downloadCount'] ?? 0)
-                . ' 👍 ' . ($item['stats']['thumbsUpCount'] ?? 0)
-                . ' / 📥 ' . ($latestVersion['stats']['downloadCount'] ?? 0)
-                . ' 👍 ' . ($latestVersion['stats']['thumbsUpCount'] ?? 0) . '</p>';
-
+            $metaInfo = "<svg width=\"{$icon_size}\" height=\"{$icon_size}\" viewBox=\"0 0 {$icon_size} {$icon_size}\" xmlns=\"http://www.w3.org/2000/svg\"><image href=\"" .
+                        htmlspecialchars($item['creator']['image']) .
+                        "\" width=\"{$icon_size}\" height=\"{$icon_size}\" preserveAspectRatio=\"xMidYMin slice\"/></svg> ";
+            $metaInfo .= htmlspecialchars($item['creator']['username']);
+            $metaInfo .= ' | Model Type: ' . htmlspecialchars($item['type']);
+            $stats = '📥 ' . ($item['stats']['downloadCount'] ?? 0)
+                . ' 👍 ' . ($item['stats']['thumbsUpCount'] ?? 0);
+            if ($latestVersion) {
+                $metaInfo .= ' | Base Model: ' . htmlspecialchars($latestVersion['baseModel']);
+                $stats .= ' / 📥 ' . ($latestVersion['stats']['downloadCount'] ?? 0)
+                . ' 👍 ' . ($latestVersion['stats']['thumbsUpCount'] ?? 0);
+            }
             $this->items[] = [
                 'title' => $item['name'],
                 'uri' => 'https://civitai.com/models/' . $item['id'],
                 'author' => $item['creator']['username'],
-                'content' => $prependImages . $stats . $item['description'],
+                'content' => '<p>' . $metaInfo . ' | ' . $stats . '</p>'. $prependImages . $item['description'],
                 'categories' => [$item['type'], $latestVersion['baseModel']] + $item['tags'],
                 'timestamp' => $latestVersionTime,
                 'enclosures' => $enclosures,

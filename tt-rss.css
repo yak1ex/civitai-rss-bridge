@@ -1,4 +1,4 @@
 /* Copy and paste to tt-rss custom CSS area */
-div.content div:has(div a img) { width: 100%; height: auto; overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
-div.content div div:has(a img) { display: flex; flex-direction: row; gap: 10px; width: fit-content}
-div.content div div a img { max-width: 200px !important; height: auto; flex-shrink: 0; }
+div.content div:has(div a img, div a video) { width: 100%; height: auto; overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
+div.content div div:has(a img, a video) { display: flex; flex-direction: row; gap: 10px; width: fit-content}
+div.content div div a img, div.content div div a video { max-width: 200px !important; height: auto; flex-shrink: 0; }

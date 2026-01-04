@@ -264,9 +264,13 @@ class CivitaiBridge extends BridgeAbstract
                 }
             }
             $prependImages .= '</div></div>';
-            $metaInfo = "<svg width=\"{$icon_size}\" height=\"{$icon_size}\" viewBox=\"0 0 {$icon_size} {$icon_size}\" xmlns=\"http://www.w3.org/2000/svg\"><image href=\"" .
-                        htmlspecialchars($item['creator']['image']) .
-                        "\" width=\"{$icon_size}\" height=\"{$icon_size}\" preserveAspectRatio=\"xMidYMin slice\"/></svg> ";
+            $creatorImage = $item['creator']['image'] ?? null;
+            $metaInfo = '';
+            if (!empty($creatorImage)) {
+                $metaInfo = "<svg width=\"{$icon_size}\" height=\"{$icon_size}\" viewBox=\"0 0 {$icon_size} {$icon_size}\" xmlns=\"http://www.w3.org/2000/svg\"><image href=\"" .
+                    htmlspecialchars($creatorImage) .
+                    "\" width=\"{$icon_size}\" height=\"{$icon_size}\" preserveAspectRatio=\"xMidYMin slice\"/></svg> ";
+            }
             $metaInfo .= htmlspecialchars($item['creator']['username']);
             $metaInfo .= ' | Model Type: ' . htmlspecialchars($item['type']);
             $stats = '📥 ' . ($item['stats']['downloadCount'] ?? 0)

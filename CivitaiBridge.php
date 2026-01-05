@@ -265,13 +265,18 @@ class CivitaiBridge extends BridgeAbstract
             }
             $prependImages .= '</div></div>';
             $creatorImage = $item['creator']['image'] ?? null;
-            $metaInfo = '';
+            $metaInfo = '<style>';
+            $metaInfo .= ".meta-info { display: inline-flex; align-items: center; gap: 8px; } ";
+            $metaInfo .= ".creator-avatar { width: {$icon_size}px; height: {$icon_size}px; overflow: hidden; display: inline-block; } ";
+            $metaInfo .= ".creator-avatar img { max-width: {$icon_size}px; object-fit: cover; min-height: 100%; }";
+            $metaInfo .= '</style>';
+            $metaInfo .= '<p class="meta-info">';
             if (!empty($creatorImage)) {
-                $metaInfo = "<svg width=\"{$icon_size}\" height=\"{$icon_size}\" viewBox=\"0 0 {$icon_size} {$icon_size}\" xmlns=\"http://www.w3.org/2000/svg\"><image href=\"" .
+                $metaInfo .= '<span class="creator-avatar"><img src="' .
                     htmlspecialchars($creatorImage) .
-                    "\" width=\"{$icon_size}\" height=\"{$icon_size}\" preserveAspectRatio=\"xMidYMin slice\"/></svg> ";
+                    '" /></span>';
             }
-            $metaInfo .= htmlspecialchars($item['creator']['username']);
+            $metaInfo .= '<span>' . htmlspecialchars($item['creator']['username']) . '</span>';
             $metaInfo .= ' | Model Type: ' . htmlspecialchars($item['type']);
             $stats = '📥 ' . ($item['stats']['downloadCount'] ?? 0)
                 . ' 👍 ' . ($item['stats']['thumbsUpCount'] ?? 0);
@@ -280,11 +285,12 @@ class CivitaiBridge extends BridgeAbstract
                 $stats .= ' / 📥 ' . ($latestVersion['stats']['downloadCount'] ?? 0)
                 . ' 👍 ' . ($latestVersion['stats']['thumbsUpCount'] ?? 0);
             }
+            $metaInfo .= ' | ' . $stats . '</p>';
             $this->items[] = [
                 'title' => $item['name'],
                 'uri' => 'https://civitai.com/models/' . $item['id'],
                 'author' => $item['creator']['username'],
-                'content' => '<p>' . $metaInfo . ' | ' . $stats . '</p>'. $prependImages . $item['description'],
+                'content' => $metaInfo . $prependImages . $item['description'],
                 'categories' => [$item['type'], $latestVersion['baseModel']] + $item['tags'],
                 'timestamp' => $latestVersionTime,
                 'enclosures' => $enclosures,

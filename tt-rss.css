@@ -1,9 +1,9 @@
 /* Copy and paste to tt-rss custom CSS area */
 /* creator avatar */
-div.content p:has(span img) { display: inline-flex; align-items: center; gap: 8px; }
-div.content p span:has(img) { width: 48px; height: 48px; overflow: hidden; display: inline-block; }
-div.content p span img { max-width: 48px; object-fit: cover; min-height: 100%; }
+p[ttrss-class="meta-info"] { display: inline-flex; align-items: center; gap: 8px; }
+span[ttrss-class="creator-avatar"] { width: 48px; height: 48px; overflow: hidden; display: inline-block; }
+span[ttrss-class="creator-avatar"] img { max-width: 48px; object-fit: cover; min-height: 100%; }
 /* images and videos gallery */
-div.content div:has(div a img, div a video) { width: 100%; height: auto; overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
-div.content div div:has(a img, a video) { display: flex; flex-direction: row; gap: 10px; width: fit-content}
-div.content div div a img, div.content div div a video { max-width: 200px !important; height: auto; flex-shrink: 0; }
+div[ttrss-class="outer-box"] { width: 100%; height: auto; overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
+div[ttrss-class="inner-box"] { display: flex; flex-direction: row; gap: 10px; width: fit-content}
+div[ttrss-class="inner-box"] a img, div[ttrss-class="inner-box"] a video { max-width: 200px !important; height: auto; flex-shrink: 0; }

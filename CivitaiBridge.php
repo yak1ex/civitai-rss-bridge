@@ -242,7 +242,7 @@ class CivitaiBridge extends BridgeAbstract
             $prependImages .= '.outer-box { width: 100%; height: auto; overflow-x: auto; overflow-y: hidden; white-space: nowrap; } ';
             $prependImages .= '.inner-box { display: flex; flex-direction: row; gap: 10px; width: fit-content} ';
             $prependImages .= '.inner-box img, .inner-box video { max-width: 200px; height: auto; flex-shrink: 0; }';
-            $prependImages .= '</style><div class="outer-box"><div class="inner-box">';
+            $prependImages .= '</style><div class="outer-box" ttrss-class="outer-box"><div class="inner-box" ttrss-class="inner-box">';
             if ($latestVersion && isset($latestVersion['images'])) {
                 foreach ($latestVersion['images'] as $image) {
                     if (isset($image['url'])) {
@@ -270,9 +270,9 @@ class CivitaiBridge extends BridgeAbstract
             $metaInfo .= ".creator-avatar { width: {$icon_size}px; height: {$icon_size}px; overflow: hidden; display: inline-block; } ";
             $metaInfo .= ".creator-avatar img { max-width: {$icon_size}px; object-fit: cover; min-height: 100%; }";
             $metaInfo .= '</style>';
-            $metaInfo .= '<p class="meta-info">';
+            $metaInfo .= '<p class="meta-info" ttrss-class="meta-info">';
             if (!empty($creatorImage)) {
-                $metaInfo .= '<span class="creator-avatar"><img src="' .
+                $metaInfo .= '<span class="creator-avatar" ttrss-class="creator-avatar"><img src="' .
                     htmlspecialchars($creatorImage) .
                     '" /></span>';
             }

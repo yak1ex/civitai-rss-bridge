@@ -291,7 +291,13 @@ class CivitaiBridge extends BridgeAbstract
                 'uri' => 'https://civitai.com/models/' . $item['id'],
                 'author' => $item['creator']['username'],
                 'content' => $metaInfo . $prependImages . $item['description'],
-                'categories' => array_merge([$item['type'], $latestVersion['baseModel']], $item['tags']),
+                'categories' => array_merge(
+                    array_filter([
+                        $item['type'] ?? null,
+                        $latestVersion['baseModel'] ?? null,
+                    ], static fn($v) => $v !== null && $v !== ''),
+                    is_array($item['tags'] ?? null) ? $item['tags'] : []
+                ),
                 'timestamp' => $latestVersionTime,
                 'enclosures' => $enclosures,
             ];
